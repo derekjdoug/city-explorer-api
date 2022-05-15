@@ -35,18 +35,10 @@ app.get('/weatherData', (request, response) => {
 class Forecast {
   static weatherForecast = require('./data/weather.json');
 
-  forecastArr = [];
-  cityForecast = [];
-
   constructor(city) {
-    this.forecast = Forecast.weatherForecast.find(weatherObj => weatherObj.city_name === city).data;
-    this.forecastArr = [this.forecast];
+    this.city = Forecast.weatherForecast.find(weatherObj => weatherObj.city_name.toLowerCase() === city.toLowerCase());
+    this.forecastArr = this.city.data.map(weatherObj => ({'date': weatherObj.datetime, 'description': weatherObj.weather.description}));
     console.log(this.forecastArr);
-    this.date = this.forecast.find(weatherObj => weatherObj.datetime);
-    this.weather = this.date.weather.description;
-    this.forecastArr[0].map(day => this.cityForecast.push(`date: ${day.datetime}, description: ${day.weather.description}`));
-    console.log(this.cityForecast);
-    console.log(city);
   }
 
 };
