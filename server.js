@@ -24,12 +24,17 @@ app.get('/', (request, response) => {
   response.send('hello from the home route');
 });
 
-app.get('/weatherData', (request, response) => {
-  const city = request.query.city;
-  console.log('type of query requested: ', city);
-  const weatherResults = new Forecast(city);
-  console.log('Forecast Result: ', weatherResults);
-  response.send(weatherResults);
+app.get('/weatherData', (request, response, next) => {
+  try {
+    const city = request.query.city;
+    console.log('type of query requested: ', city);
+    const weatherResults = new Forecast(city);
+    console.log('Forecast Result: ', weatherResults);
+    response.status(200).send(weatherResults);
+  } catch (error) {
+      error.customMessage = 'Something went wrong in your weather API call.';
+      next(error);
+  }
 });
 
 class Forecast {
@@ -43,5 +48,9 @@ class Forecast {
 
 };
 
+// Error handling function. MUST be last app.use function
+app.use((error, request, response, next) => {
+  response.status(500).send(`Uh oh. Server error during API call: ${error.customMessage}`);
+})
 // this turns the server on to the port that you specifed in your .env file
 app.listen(PORT, () => console.log(`listening on ${PORT}`));
