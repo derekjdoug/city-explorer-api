@@ -11,22 +11,24 @@ const app = express();
 
 // library that determines who is allowed to speak to our server
 const cors = require('cors');
+const { default: axios } = require('axios');
 
 
 // this settting says that everyone is allowed to speak to our server
 app.use(cors());
 
 // we are getting the port variable from the .env file.
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3002;
 
 // this is a route. if you turn the server on and go to http://localhost:3001/ (or whatever port you specified in your .env), you will see 'hello from the home route'
 app.get('/', (request, response) => {
   response.send('hello from the home route');
 });
 
-app.get('/weatherData', (request, response, next) => {
+app.get('/weatherData', async (request, response, next) => {
   try {
     const city = request.query.city;
+    const url = `http://api.weatherbit.io/v2.0/current?lat=${lat}&lon=${lon}&key=${process.env.WEATHER_API_KEY}`;
     console.log('type of query requested: ', city);
     const weatherResults = new Forecast(city);
     console.log('Forecast Result: ', weatherResults);
@@ -35,6 +37,20 @@ app.get('/weatherData', (request, response, next) => {
       error.customMessage = 'Something went wrong in your weather API call.';
       next(error);
   }
+});
+
+app.get('/movieData', async (request, response, next) => {
+  try {
+  const searchQuery = request.query.searchQuery;
+  const url = `https://api.themoviedb.org/3/search/movie/${searchQuery}?api-key=${process.env.MOVIE_API_KEY}&`;
+  const movieResponse = await axios.get(url);
+  console.log(movieResponse.data);
+  const movieArr = movieResponse.data.results.map(movie => new Movies(movie));
+  response.status(200).send('testing on the movie endpoint');
+} catch (error) {
+  error.customMessage= 'Something went wrong in your weather API call.'
+  next(error);
+}
 });
 
 class Forecast {
@@ -47,6 +63,12 @@ class Forecast {
   }
 
 };
+
+class Movies {
+  constructor(movieObj) {
+
+  }
+}
 
 // Error handling function. MUST be last app.use function
 app.use((error, request, response, next) => {
