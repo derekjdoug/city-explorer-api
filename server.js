@@ -29,11 +29,11 @@ app.get('/weatherData', async (request, response, next) => {
   try {
     const lat = request.query.lat;
     const lon = request.query.lon;
-    console.log(request.query);
+    // console.log(request.query);
     const url = `http://api.weatherbit.io/v2.0/forecast/daily?lat=${lat}&lon=${lon}&key=${process.env.WEATHER_API_KEY}`;
-    console.log(url);
+    // console.log(url);
     const weatherResponse = await axios.get(url);
-    console.log(weatherResponse.data);
+    // console.log(weatherResponse.data);
     const weatherArr = weatherResponse.data.data.map(day => new Forecast(day));
     console.log(weatherArr);
     response.status(200).send(weatherArr);
@@ -45,8 +45,9 @@ app.get('/weatherData', async (request, response, next) => {
 
 app.get('/movieData', async (request, response, next) => {
   try {
-    const searchQuery = request.query.searchQuery;
-    const url = `https://api.themoviedb.org/3/search/movie/?api_key=${process.env.MOVIE_API_KEY}&query=${searchQuery}`;
+    const city = request.query.city;
+    console.log(request.query.city);
+    const url = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.MOVIE_API_KEY}&query=${city}`;
     const movieResponse = await axios.get(url);
     console.log(movieResponse.data);
     const movieArr = movieResponse.data.results.map(movie => new Movies(movie));
@@ -61,13 +62,20 @@ class Forecast {
   constructor(forecast) {
     this.date = forecast.datetime;
     this.description = forecast.weather.description;
-    console.log(this.forecast);
+    // console.log(this.forecast);
   }
 }
 
 class Movies {
   constructor(movie) {
     this.title = movie.title;
+    this.overview = movie.overview;
+    this.average_votes = movie.vote_average;
+    this.total_votes = movie.vote_count;
+    this.image_url = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
+    this.popularity = movie.popularity;
+    this.released_on = movie.release_date;
+    console.log(this.movie);
   }
 }
 
