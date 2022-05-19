@@ -43,35 +43,33 @@ app.get('/weatherData', async (request, response, next) => {
   }
 });
 
-// app.get('/movieData', async (request, response, next) => {
-//   try {
-//   const searchQuery = request.query.searchQuery;
-//   const url = `https://api.themoviedb.org/3/search/movie/${searchQuery}?api-key=${process.env.MOVIE_API_KEY}&`;
-//   const movieResponse = await axios.get(url);
-//   console.log(movieResponse.data);
-//   const movieArr = movieResponse.data.results.map(movie => new Movies(movie));
-//   response.status(200).send('testing on the movie endpoint');
-// } catch (error) {
-//   error.customMessage= 'Something went wrong in your weather API call.'
-//   next(error);
-// }
-// });
+app.get('/movieData', async (request, response, next) => {
+  try {
+    const searchQuery = request.query.searchQuery;
+    const url = `https://api.themoviedb.org/3/search/movie/?api_key=${process.env.MOVIE_API_KEY}&query=${searchQuery}`;
+    const movieResponse = await axios.get(url);
+    console.log(movieResponse.data);
+    const movieArr = movieResponse.data.results.map(movie => new Movies(movie));
+    response.status(200).send(movieArr);
+  } catch (error) {
+    error.customMessage= 'Something went wrong in your movie API call.';
+    next(error);
+  }
+});
 
 class Forecast {
   constructor(forecast) {
     this.date = forecast.datetime;
     this.description = forecast.weather.description;
-    // this.city = Forecast.weatherForecast.find(weatherObj => weatherObj.city_name.toLowerCase() === city.toLowerCase());
-    // this.forecastArr = this.city.data.map(weatherObj => ({'date': weatherObj.datetime, 'description': weatherObj.weather.description}));
     console.log(this.forecast);
   }
 }
 
-// class Movies {
-//   constructor(movieObj) {
-
-//   }
-// }
+class Movies {
+  constructor(movie) {
+    this.title = movie.title;
+  }
+}
 
 // Error handling function. MUST be last app.use function
 app.use((error, request, response, next) => {
