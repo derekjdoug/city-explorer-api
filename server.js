@@ -45,7 +45,7 @@ app.get('/weatherData', async (request, response, next) => {
 
 app.get('/movieData', async (request, response, next) => {
   try {
-    const city = request.query.city;
+    const city = request.query.city.split(',')[0];
     console.log(request.query.city);
     const url = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.MOVIE_API_KEY}&query=${city}`;
     const movieResponse = await axios.get(url);
