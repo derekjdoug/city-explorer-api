@@ -15,6 +15,8 @@
 
 - This application uses express, cors, and dotenv to create a locally-hosted server for our City Explorer client.
 
+![WRRC](./img/city-explorer-wrrc.png)
+
 ## Change Log
 
 05-14-2022 7:39pm - Application now has a fully-functional express server, with a GET route for the location resource.
