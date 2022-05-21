@@ -5,7 +5,7 @@ const handleError = require('./error');
 function getWeather(request, response) {
   const lat = request.query.lat;
   const lon = request.query.lon;
-  const url = `http://api.weatherbit.io/v2.0/forecast/daily?lat=${lat}&lon=${lon}&key=${process.env.WEATHER_API_KEY}`;
+  const url = `https://api.weatherbit.io/v2.0/forecast/daily?lat=${lat}&lon=${lon}&days=6&key=${process.env.WEATHER_API_KEY}`;
   axios
     .get(url)
     .then(response => {
