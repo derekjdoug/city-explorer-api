@@ -2,20 +2,19 @@
 const axios = require('axios');
 const handleError = require('./error');
 
-function getMovies(request, response) {
+async function getMovies(request) {
   const city = request.query.city.split(',')[0];
   const url = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.MOVIE_API_KEY}&query=${city}`;
-  axios
-    .get(url)
-    .then(response => {
-      console.log(request.query.city);
-      const movieArr = response.data.results.map(movie => new Movies(movie));
-      response.status(200).send(movieArr);
-    })
-    .catch (error => {
-      error.customMessage= 'Something went wrong in your movie API call.';
-      handleError(error, request, response);
-    });
+  try {
+    const moviesResponse = await axios.get(url);
+    console.log(request.query.city);
+    const movieArr = moviesResponse.data.results.map(movie => new Movies(movie));
+    // response.status(200).send(movieArr);
+    return Promise.resolve(movieArr);
+  } catch (error) {
+    error.customMessage = 'Something went wrong in your movie API call.';
+    handleError(error, request);
+  }
 }
 
 class Movies {

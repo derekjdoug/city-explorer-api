@@ -16,9 +16,12 @@ app.get('/', (request, response) => {
   response.send('hello from the home route');
 });
 
-app.get('/weather', getWeather);
+const helpMovies = (request, response) => getMovies(request).then(data => response.status(200).send(data));
+const helpWeather = (request, response) => getWeather(request).then(data => response.status(200).send(data));
 
-app.get('/movies', getMovies);
+app.get('/weather', helpWeather);
+app.get('/movies', helpMovies);
+
 
 app.use('*', notFound);
 
