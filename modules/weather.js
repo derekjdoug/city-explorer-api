@@ -1,8 +1,7 @@
 'use strict';
 const axios = require('axios');
-const handleError = require('./error');
 
-async function getWeather(request, next) {
+async function getWeather(request) {
   const lat = request.query.lat;
   const lon = request.query.lon;
   const url = `https://api.weatherbit.io/v2.0/forecast/daily?lat=${lat}&lon=${lon}&days=6&key=${process.env.WEATHER_API_KEY}`;
@@ -14,7 +13,6 @@ async function getWeather(request, next) {
     return Promise.resolve(weatherArr);
   } catch (error) {
     error.customMessage= 'Something went wrong in your weather API call.';
-    next(error);
   }
 }
 

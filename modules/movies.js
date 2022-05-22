@@ -1,7 +1,7 @@
 'use strict';
 const axios = require('axios');
 
-async function getMovies(request, next) {
+async function getMovies(request) {
   const city = request.query.city.split(',')[0];
   const url = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.MOVIE_API_KEY}&query=${city}`;
   try {
@@ -12,7 +12,6 @@ async function getMovies(request, next) {
     return Promise.resolve(movieArr);
   } catch (error) {
     error.customMessage= 'Something went wrong in your movies API call.';
-    next(error);
   }
 }
 
