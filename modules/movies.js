@@ -20,6 +20,7 @@ async function getMovies(request) {
       cache[key] = city;
       cache[key].timestamp = Date.now();
       cache[key].data = movieArr;
+      console.log(movieArr);
       return Promise.resolve(movieArr);
     } catch (error) {
       error.customMessage = 'Something went wrong in your movies API call.';
