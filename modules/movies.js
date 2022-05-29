@@ -2,7 +2,7 @@
 const axios = require('axios');
 let cache = require('./cache');
 
-async function getMovies(request, response) {
+async function getMovies(request) {
   const city = request.query.city.split(',')[0];
   const key = 'movie-key:' + city;
 
@@ -20,7 +20,6 @@ async function getMovies(request, response) {
       cache[key] = request.query.city.split(',')[0];
       cache[key].timestamp = Date.now();
       cache[key].data = movieArr;
-      response.status(200).send(movieArr);
       return Promise.resolve(movieArr);
     } catch (error) {
       error.customMessage = 'Something went wrong in your movies API call.';

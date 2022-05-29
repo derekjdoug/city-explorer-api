@@ -2,7 +2,7 @@
 const axios = require('axios');
 let cache = require('./cache.js');
 
-async function getWeather(request, response) {
+async function getWeather(request) {
   const { lat, lon } = request.query;
   const key = 'weather-key:' + lat + lon;
 
@@ -19,7 +19,6 @@ async function getWeather(request, response) {
       cache[key].timestamp = Date.now();
       cache[key].data = weatherArr;
       console.log(weatherArr);
-      response.status(200).send(weatherArr);
       return Promise.resolve(weatherArr);
     } catch (error) {
       error.customMessage= 'Something went wrong in your weather API call.';
