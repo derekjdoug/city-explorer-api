@@ -17,7 +17,7 @@ async function getMovies(request) {
       const moviesResponse = await axios.get(url);
       console.log(request.query.city);
       const movieArr = moviesResponse.data.results.map(movie => new Movies(movie));
-      cache[key] = request.query.city.split(',')[0];
+      cache[key] = city;
       cache[key].timestamp = Date.now();
       cache[key].data = movieArr;
       return Promise.resolve(movieArr);
