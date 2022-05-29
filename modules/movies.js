@@ -1,6 +1,6 @@
 'use strict';
 const axios = require('axios');
-let cache = require('./cache');
+let cache = require('./cache.js');
 
 async function getMovies(request) {
   const city = request.query;
@@ -19,7 +19,7 @@ async function getMovies(request) {
       const movieArr = moviesResponse.data.results.map(movie => new Movies(movie));
       cache[key] = request.query;
       cache[key].timestamp = Date.now();
-      cache[key].data = movieArr;
+      cache[key].results = movieArr;
       console.log(movieArr);
       return Promise.resolve(movieArr);
     } catch (error) {
