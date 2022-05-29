@@ -3,7 +3,7 @@ const axios = require('axios');
 let cache = require('./cache');
 
 async function getMovies(request) {
-  const city = request.query.city;
+  const city = request.query;
   const key = 'movie-key:' + city;
 
   if (cache[key] && (Date.now() - cache[key].timestamp < 60000)) {
@@ -17,7 +17,7 @@ async function getMovies(request) {
       const moviesResponse = await axios.get(url);
       console.log(request.query.city);
       const movieArr = moviesResponse.data.results.map(movie => new Movies(movie));
-      cache[key] = city;
+      cache[key] = request.query;
       cache[key].timestamp = Date.now();
       cache[key].data = movieArr;
       console.log(movieArr);
