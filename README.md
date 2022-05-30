@@ -9,7 +9,7 @@
 
 ## Getting Started
 
-- Refactor all of the code on the server.js file into different modules for increased readability and to separate functionality.
+- Refactor all the components on the server to use cache hits for efficiency.
 
 ## Architecture
 
@@ -21,18 +21,21 @@
 
 05-14-2022 7:39pm - Application now has a fully-functional express server, with a GET route for the location resource.
 05-21-2022 4:27pm - Location map, weather, and movie functionality all operational, to include appropriate error handling. App refactored into modules.
+05-29-2022 7:27pm - Caching functionality introduced for the weather and movie APIs.
 
 ## Credit and Collaborations
+
+- Special thanks to Zayah Lang and Luis Sandoval for helping debug.
 
 Time Estimates
 For each of the lab features, make an estimate of the time it will take you to complete the feature, and record your start and finish times for that feature:
 
-Name of feature: Lab 09 Refactoring into Modules
+Name of feature: Lab 10 Cache
 
-Estimate of time needed to complete: 2 hours
+Estimate of time needed to complete: 4 hours
 
-Start time: 1430
+Start time: 28 May 2022 @ 1200
 
-Finish time: 1630
+Finish time: 29 May 2022 @ 2000
 
-Actual time needed to complete: Approx 2 hours
+Actual time needed to complete: Approx 5 hours
