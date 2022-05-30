@@ -3,7 +3,7 @@ const axios = require('axios');
 let cache = require('./cache.js');
 
 async function getMovies(request) {
-  const city = request.query;
+  const city = request.query.city.split(',')[0];
   console.log(city);
   const key = 'movie-' + city;
 
@@ -15,7 +15,6 @@ async function getMovies(request) {
     const url = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.MOVIE_API_KEY}&query=${city}`;
     try {
       const moviesResponse = await axios.get(url);
-      console.log(moviesResponse);
       const movieArr = moviesResponse.data.results.map(movie => new Movies(movie));
       cache[key] = request.query;
       cache[key].timestamp = Date.now();
