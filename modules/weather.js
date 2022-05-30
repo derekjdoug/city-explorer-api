@@ -4,7 +4,7 @@ let cache = require('./cache.js');
 
 async function getWeather(request) {
   const { lat, lon } = request.query;
-  const key = 'weather-key:' + lat + lon;
+  const key = 'weather-' + lat + lon;
 
   if (cache[key] && (Date.now() - cache[key].timestamp < 60000)) {
     console.log('Cache Hit');

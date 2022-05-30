@@ -4,7 +4,7 @@ let cache = require('./cache.js');
 
 async function getMovies(request) {
   const city = request.query;
-  const key = 'movie-key:' + city;
+  const key = 'movie-' + city;
 
   if (cache[key] && (Date.now() - cache[key].timestamp < 60000)) {
     console.log('Cache Hit');
@@ -12,14 +12,13 @@ async function getMovies(request) {
   } else {
     console.log('Cache Miss');
     const url = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.MOVIE_API_KEY}&query=${city}`;
-
     try {
       const moviesResponse = await axios.get(url);
       console.log(request.query.city);
       const movieArr = moviesResponse.data.results.map(movie => new Movies(movie));
       cache[key] = request.query;
       cache[key].timestamp = Date.now();
-      cache[key].results = movieArr;
+      cache[key].data = movieArr;
       console.log(movieArr);
       return Promise.resolve(movieArr);
     } catch (error) {
